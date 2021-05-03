@@ -1,12 +1,20 @@
 <template>
-  <div id="app">
+  <v-app>
     <div id="nav">
       <router-link to="/login">Login</router-link> |
       <router-link to="/dashboard">Dashboard</router-link>
     </div>
-    <router-view/>
-  </div>
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
+
+<script>
+export default {
+  name: "App",
+};
+</script>
 
 <style>
 #app {
@@ -16,16 +24,13 @@
   text-align: center;
   color: #2c3e50;
 }
-
 #nav {
   padding: 30px;
 }
-
 #nav a {
   font-weight: bold;
   color: #2c3e50;
 }
-
 #nav a.router-link-exact-active {
   color: #42b983;
 }
