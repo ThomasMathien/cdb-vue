@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1>ee</h1>
+    <h1>Computer Database</h1>
+
+
 
   </div>
 </template>
