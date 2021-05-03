@@ -5,9 +5,9 @@
         <div>
         <span>
           <input placeholder="Search" v-model="search"/>
-          <button/>
+          <v-btn/>
         </span>
-        <button>Add</button>
+        <v-btn>Add</v-btn>
         </div>
         <table>
           <thead>
@@ -38,6 +38,8 @@
 </template>
 
 <script>
+
+
 export default {
   name: 'Dashboard',
   props: {
