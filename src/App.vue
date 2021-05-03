@@ -2,10 +2,10 @@
   <v-app>
     <div id="nav">
       <router-link to="/login">Login</router-link> |
-      <router-link to="/dashboard">Dashboard</router-link>
+      <router-link to="/dashboard" >Dashboard</router-link>
     </div>
     <v-main>
-      <router-view />
+      <router-view role="ROLE_ADMIN"/>
     </v-main>
   </v-app>
 </template>
