@@ -1,6 +1,5 @@
 <template>
   <v-app>
-
     <v-app-bar
         absolute
         app="true"
