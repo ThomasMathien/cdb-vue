@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>ee</h1>
-    <v-card>
+    <v-card max-width="600px">
       <form>
         <v-text-field
           v-model="email"

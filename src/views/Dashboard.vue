@@ -1,6 +1,7 @@
 <template>
   <div>
-    <v-content id="table">
+    <ComputerForm v-if="displayForm"/>
+    <v-main id="table">
         <v-toolbar fixed table>
           <v-text-field
             v-model="searchField"
@@ -16,7 +17,7 @@
                 </v-btn>
               </template>
           </v-text-field>
-          <v-btn rounded icon><v-icon large>mdi-plus-circle</v-icon></v-btn>
+          <v-btn rounded icon @click="addComputer"><v-icon large>mdi-plus-circle</v-icon></v-btn>
           </v-toolbar>
         <v-card>
  
@@ -29,6 +30,7 @@
               hide-default-footer
               :items="computers"
               :items-per-page="10"
+              @click:row="addComputer"
               class="elevation-4">
           </v-data-table>
           <div>
@@ -55,13 +57,19 @@
             </v-row>
           </div>
         </v-card>
-    </v-content>
+    </v-main>
   </div>
 </template>
 
 <script>
+
+import ComputerForm from '../components/ComputerForm'
+
 export default {
   name: "Dashboard",
+  components: {
+      ComputerForm,
+  },
   props: {
     role: String,
   },
@@ -92,13 +100,19 @@ export default {
     search() {
       this.searchField="Searched!";
       alert("Search!");
+    },
+
+    addComputer(){
+      this.displayForm = true;
     }
+
   },
   data: function () {
     return {
       selectedComputers: [],
       page:1,
       pageCount:3,
+      displayForm: false,
       searchField: "",
       itemsPerPage:10,
       itemsPerPageOptions: [10,50,100],
