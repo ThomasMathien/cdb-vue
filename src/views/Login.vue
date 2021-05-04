@@ -14,12 +14,7 @@
           required
       ></v-text-field>
 
-      <v-text-field
-          v-model="password"
-          :rules="passwordRules"
-          label="Password"
-          required
-      ></v-text-field>
+      <Password/>
 
       <v-checkbox
           v-model="checkbox"
@@ -51,14 +46,20 @@
 </template>
 
 <script>
+import Password from '../components/Password.vue'
 export default {
-  name: 'Dashboard',
+  name: 'Login',
+
+  components: {
+    Password,
+  },
 
   data() {
     return {
       formValid: false,
       email: "",
       password: "",
+      passwordVisibility: false,
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(v) || 'E-mail must be valid',
