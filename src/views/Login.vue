@@ -4,7 +4,6 @@
     <v-form
         ref="form"
         v-model="formValid"
-        lazy-validation
     >
 
       <v-text-field
@@ -14,7 +13,9 @@
           required
       ></v-text-field>
 
-      <Password/>
+      <Password
+      @changePassword="changePassword"
+      />
 
       <v-checkbox
           v-model="checkbox"
@@ -67,6 +68,9 @@ export default {
   },
 
   methods: {
+    changePassword(password){
+      this.password=password;
+    },
     validate(user) {
       this.$refs.form.validate()
       this.$emit("connect", user);
@@ -79,11 +83,6 @@ export default {
 </script>
 
 <style scoped>
-
-h1 {
-  font-size: 35px;
-  color: darkcyan;
-}
 
 .loginForm {
   padding-top: 5%;
