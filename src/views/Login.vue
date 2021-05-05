@@ -22,7 +22,7 @@
           required
       ></v-checkbox>
 
-      <router-link to="/dashboard">
+      <router-link to="/dashboard/computer">
         <v-btn
             :disabled="!formValid"
             color="success"

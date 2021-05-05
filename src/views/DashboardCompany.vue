@@ -1,9 +1,12 @@
 <template>
   <div>
-    <ComputerForm  v-if="displayForm" v-model="displayForm" v-bind:computer="editedComputer" />
+    <CompanyForm  v-if="displayForm" v-model="displayForm" v-bind:company="editedCompany" />
     <v-main id="table">
+      <h2>Total companies found: {{totalItems}}</h2>
       <v-toolbar fixed table>
+          <!-- TODO remove or handle disabled -->
         <v-text-field
+          disabled 
           v-model="searchField"
           label="Search"
           single-line
@@ -19,7 +22,7 @@
             </v-btn>
           </template>
         </v-text-field>
-        <v-btn rounded icon @click.stop="addComputer"
+        <v-btn rounded icon @click.stop="addCompany"
           ><v-icon large>mdi-plus-circle</v-icon></v-btn
         >
       </v-toolbar>
@@ -27,13 +30,13 @@
         <v-data-table
           :show-select="canEdit ? true : false"
           height="400px"
-          v-model="selectedComputers"
+          v-model="selectedCompanies"
           :headers="headers"
           fixed-header
           hide-default-footer
-          :items="computers"
+          :items="companies"
           :items-per-page="itemsPerPage"
-          @click:row="editComputer"
+          @click:row="editCompany"
           class="elevation-4"
         >
         </v-data-table>
@@ -46,16 +49,18 @@
             </v-col>
             <v-spacer />
             <v-col>
+              <!-- TODO remove or handle disabled -->
               <v-select
-                label="Computers per page"
+                label="Companies per page"
                 v-model="itemsPerPage"
                 :items="itemsPerPageOptions"
-                @input="getComputers"
+                @input="getCompanies"
+                disabled
               >
               </v-select>
             </v-col>
             <v-col>
-              <v-pagination v-model="page" :length="pageCount" :total-visible="3" @input="getComputers"> </v-pagination>
+              <v-pagination v-model="page" :length="pageCount" :total-visible="pageCount" @input="getCompanies"> </v-pagination>
             </v-col>
           </v-row>
         </div>
@@ -65,13 +70,13 @@
 </template>
 
 <script>
-import ComputerForm from "../components/ComputerForm";
+import CompanyForm from "../components/CompanyForm";
 import axios from "axios";
 
 export default {
-  name: "Dashboard",
+  name: "DashboardCompany",
   components: {
-    ComputerForm,
+    CompanyForm,
   },
   props: {
     role: String,
@@ -82,81 +87,92 @@ export default {
     },
     displayClearSearch() {
       return this.searchField.length != 0;
+    },
+    pageCount() {
+        return Math.ceil(this.totalItems / this.itemsPerPage);
     }
   },
   methods: {
     search() {
-      this.computers = [],
-      this.getComputers()
+      this.companies = [],
+      this.getCompanies()
     },
-    addComputer() {
-      this.editedComputer = null;
+    addCompany() {
+      this.editedCompany = null;
       this.displayForm = true;
     },
-    editComputer(value){
-      this.editedComputer = value;
+    editCompany(value){
+      this.editedCompany = value;
       this.displayForm = true;
     },
     clearSearch() {
       this.searchField = "";
-      this.getComputers();
+      this.getCompanies();
     },
 
-    getComputers() {
+    getCompanies() {
       axios
         .get(
-          "http://localhost:8080/webapp/api/computer/page?nbObject=" +
-            this.itemsPerPage +
-            "&numPage=" +
-            this.page +"&name="+this.searchField
+          "http://localhost:8080/webapp/api/company/page/"+(this.page-1)
         )
         .then((response) => {
-          this.computers = response.data;
+          this.companies = response.data;
         })
         .catch((err) => console.log(err));
+    },
+    getTotalItems() {
+        axios
+            .get(
+            "http://localhost:8080/webapp/api/company"
+            )
+            .then((response) => {
+            this.totalItems = response.data.length;
+
+            })
+            .catch((err) => console.log(err));
     },
   },
   mounted() {
     axios
       .get(
-        "http://localhost:8080/webapp/api/computer/page"
+        "http://localhost:8080/webapp/api/company/page/"+(this.page-1)
       )
       .then((response) => {
-        this.computers = response.data;
+        this.companies = response.data;
+        this.getTotalItems();
       })
       .catch((err) => console.log(err));
 
-      // axios
-      // .get(
-      //   "http://localhost:8080/webapp/api/computer/count"
-      // )
-      // .then((response) => {
-      //   this.pageCount = response.data;
-      // })
-      // .catch((err) => console.log(err));
+
+
+    //   axios
+    //   .get(
+    //     "http://localhost:8080/webapp/api/computer/count"
+    //   )
+    //   .then((response) => {
+    //     this.pageCount = response.data;
+    //   })
+    //   .catch((err) => console.log(err));
   },
   data: function () {
     return {
-      selectedComputers: [],
-      editedComputer: null,
+      totalItems: 0,
+      selectedCompanies: [],
+      editedCompany: null,
       page: 1,
-      pageCount: 3,
       displayForm: false,
       searchField: "",
       itemsPerPage: 10,
       itemsPerPageOptions: [10, 50, 100],
       headers: [
         {
-          text: "Computer name",
+          text: "Company name",
           align: "start",
           sortable: false,
           value: "name",
         },
-        { text: "Introduced", value: "introduced" },
-        { text: "Discontinued", value: "discontinued" },
-        { text: "Company", value: "companyDTORest.name" },
       ],
-      computers: [],
+      companies: [],
     };
   },
 };

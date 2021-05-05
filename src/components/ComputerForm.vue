@@ -4,7 +4,7 @@
       <v-card-title> Computer Form </v-card-title>
       <v-form ref="form" lazy-validation>
         <v-text-field label="Computer Name" v-model="computerName" 
-            :rules="companyNameRules"> 
+            :rules="computerNameRules"> 
         </v-text-field>
         <v-menu
           ref="menuIntroduced"
@@ -113,7 +113,7 @@ export default {
       menuIntroduced: false,
       menuDiscontinued: false,
       companyOptions: [],
-      companyNameRules: [
+      computerNameRules: [
           v => (!!v && !!v.trim()) || 'Computer name is required',
       ],
       discontinuedRules: [
