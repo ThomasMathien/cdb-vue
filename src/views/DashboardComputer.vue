@@ -5,6 +5,7 @@
       <router-link to="/dashboard/company" tag="button"> Dashboard Company </router-link>
   
     <ComputerForm  v-if="displayForm" v-model="displayForm" v-bind:computer="editedComputer" />
+    <Snackbar v-bind:display=true  v-bind:message="snackbarMessage" />
     <v-main id="table">
       <h2>
         Total Computers found: {{totalItems}}
@@ -47,7 +48,7 @@
         <div>
           <v-row>
             <v-col cols="1">
-              <v-btn icon v-if="canEdit">
+              <v-btn icon v-if="canEdit" @click="deleteComputer">
                 <v-icon large>mdi-delete</v-icon>
               </v-btn>
             </v-col>
@@ -73,12 +74,14 @@
 
 <script>
 import ComputerForm from "../components/ComputerForm";
+import Snackbar from "../components/Snackbar";
 import axios from "axios";
 
 export default {
   name: "DashboardComputer",
   components: {
     ComputerForm,
+    Snackbar
   },
   props: {
     role: String,
@@ -130,7 +133,6 @@ export default {
   },
 
     getComputers() {
-
       axios
         .get(
           "http://localhost:8080/webapp/api/computer/page?nbObject=" +
@@ -143,6 +145,15 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+    deleteComputer() {
+      for (let computer of this.selectedComputers){
+        console.log(computer);
+        axios
+            .post("http://localhost:8080/webapp/api/computer/delete?id="+computer.id)
+            .then((response) => console.log(response))
+            .catch((err) => console.log(err));     
+      }
+      },
   },
   mounted() {
     axios
@@ -172,6 +183,7 @@ export default {
       page: 1,
       displayForm: false,
       searchField: "",
+      snackbarMessage: "HHHHEEEEYYYYYYY",
       itemsPerPage: 10,
       itemsPerPageOptions: [10, 50, 100],
       headers: [

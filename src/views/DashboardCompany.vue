@@ -1,6 +1,22 @@
 <template>
   <div>
     <CompanyForm  v-if="displayForm" v-model="displayForm" v-bind:company="editedCompany" />
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+    >
+      {{ snackbarMessage }}
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="blue"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
     <v-main id="table">
       <h2>Total companies found: {{totalItems}}</h2>
       <v-toolbar fixed table>
@@ -120,6 +136,16 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+    // deleteCompany() {
+    //   axios
+    //     .get(
+    //       "http://localhost:8080/webapp/api/company/delete/"+
+    //     )
+    //     .then((response) => {
+    //       this.companies = response.data;
+    //     })
+    //     .catch((err) => console.log(err));
+    // },
     getTotalItems() {
         axios
             .get(
@@ -164,6 +190,7 @@ export default {
       searchField: "",
       itemsPerPage: 10,
       itemsPerPageOptions: [10, 50, 100],
+      snackbar: false,
       headers: [
         {
           text: "Company name",

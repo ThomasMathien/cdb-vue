@@ -22,7 +22,7 @@
 
     </v-app-bar>
     <v-main>
-      <router-view @connect="login"></router-view>
+      <router-view @connect="login" role="ROLE_ADMIN"></router-view>
 
       <v-navigation-drawer
           v-model="drawer"
