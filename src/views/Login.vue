@@ -23,12 +23,11 @@
       ></v-checkbox>
 
       <router-link to="/dashboard">
-
         <v-btn
             :disabled="!formValid"
             color="success"
             class="mr-4"
-            @click="validate"
+            @click="validate({email, password})"
         >
           Connect
         </v-btn>
@@ -59,22 +58,18 @@ export default {
       formValid: false,
       email: "",
       password: "",
-      passwordVisibility: false,
       emailRules: [
         v => !!v || 'E-mail is required',
-        v => /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(v) || 'E-mail must be valid',
-      ],
-      passwordRules: [
-        v => !!v || 'Password is required',
-        v => (v && v.length >= 8) || 'Name must be more than 8 characters',
+        v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid',
       ],
       checkbox: false,
     }
   },
 
   methods: {
-    validate() {
+    validate(user) {
       this.$refs.form.validate()
+      this.$emit("connect", user);
     },
     resetForm() {
       this.$refs.form.reset()

@@ -21,46 +21,56 @@
       </div>
 
     </v-app-bar>
-
     <v-main>
+      <router-view @connect="login"></router-view>
 
-      <v-parallax
-          src="https://i.pinimg.com/originals/22/97/fb/2297fb6131ffce7d300a2782d6debda3.jpg"
-          height="600"
+      <v-navigation-drawer
+          v-model="drawer"
+          absolute
+          right
+          temporary
       >
+        <v-list dense>
+          <v-list-item v-if="user.email">
+            <v-list-item-avatar>
+              <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+            </v-list-item-avatar>
 
-        <div id="nav">
-          <router-link to="/login">Login</router-link>
-        </div>
-        <router-view/>
+            <v-list-item-content>
+              <v-list-item-title>{{ this.user.email }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <router-link to="/login" v-else>
+            <v-btn
+                color="primary"
+                class="mr-4"
+                @click="disconnect"
+            >
+              Login
+            </v-btn>
+          </router-link>
 
-        <v-navigation-drawer
-            v-model="drawer"
-            absolute
-            right
-            temporary
-        >
-          <v-list dense>
-            <v-list-item>
-              <v-list-item-avatar>
-                <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
-              </v-list-item-avatar>
+          <v-divider></v-divider>
 
-              <v-list-item-content>
-                <v-list-item-title>John Leider</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+          <v-switch
+              v-model="$vuetify.theme.dark"
+              inset
+              label="Dark Mode"
+          ></v-switch>
 
-            <v-divider></v-divider>
+          <router-link to="/login" v-if="user.email">
+            <v-btn
+                color="error"
+                class="mr-4"
+                @click="disconnect"
+            >
+              Disconnect
+            </v-btn>
+          </router-link>
 
-            <v-switch
-                v-model="$vuetify.theme.dark"
-                inset
-                label="Dark Mode"
-            ></v-switch>
-          </v-list>
-        </v-navigation-drawer>
-      </v-parallax>
+        </v-list>
+      </v-navigation-drawer>
+
     </v-main>
 
     <v-footer
@@ -93,6 +103,23 @@ export default {
   data() {
     return {
       drawer: null,
+      user: {
+        role: "",
+        username: "",
+        email: "",
+        password: ""
+      },
+    }
+  },
+  methods: {
+    login(user) {
+      this.user.email = user.email;
+    },
+    disconnect() {
+      this.user.role = "";
+      this.user.username = "";
+      this.user.email = "";
+      this.user.password = "";
     }
   },
 };
