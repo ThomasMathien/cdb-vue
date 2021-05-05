@@ -1,18 +1,127 @@
 <template>
   <v-app>
-    <div id="nav">
-      <router-link to="/login">Login</router-link> |
-      <router-link to="/dashboard" >Dashboard</router-link>
-    </div>
+    <v-app-bar
+        absolute
+        app="true"
+        color="#43a047"
+        dark
+    >
+      <v-app-bar-title>Computer Database</v-app-bar-title>
+
+      <v-spacer></v-spacer>
+
+      <div class="icons">
+        <v-btn
+            icon
+            dark
+            @click.stop="drawer = !drawer"
+        >
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+      </div>
+
+    </v-app-bar>
     <v-main>
-      <router-view role="ROLE_ADMIN"/>
+      <router-view @connect="login"></router-view>
+
+      <v-navigation-drawer
+          v-model="drawer"
+          absolute
+          right
+          temporary
+      >
+        <v-list dense>
+          <v-list-item v-if="user.email">
+            <v-list-item-avatar>
+              <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+              <v-list-item-title>{{ this.user.email }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <router-link to="/login" v-else>
+            <v-btn
+                color="primary"
+                class="mr-4"
+                @click="disconnect"
+            >
+              Login
+            </v-btn>
+          </router-link>
+
+          <v-divider></v-divider>
+
+          <v-switch
+              v-model="$vuetify.theme.dark"
+              inset
+              label="Dark Mode"
+          ></v-switch>
+
+          <router-link to="/login" v-if="user.email">
+            <v-btn
+                color="error"
+                class="mr-4"
+                @click="disconnect"
+            >
+              Disconnect
+            </v-btn>
+          </router-link>
+
+        </v-list>
+      </v-navigation-drawer>
+
     </v-main>
+
+    <v-footer
+        dark
+        padless
+        class="footer"
+    >
+      <v-card
+          flat
+          tile
+          class="footerTop"
+      >
+      </v-card>
+
+      <v-divider></v-divider>
+
+      <v-card-text class="footerBot">
+        {{ new Date().getFullYear() }} — <strong>Computer Database</strong>
+      </v-card-text>
+
+    </v-footer>
+
   </v-app>
 </template>
 
 <script>
+
 export default {
   name: "App",
+  data() {
+    return {
+      drawer: null,
+      user: {
+        role: "",
+        username: "",
+        email: "",
+        password: ""
+      },
+    }
+  },
+  methods: {
+    login(user) {
+      this.user.email = user.email;
+    },
+    disconnect() {
+      this.user.role = "";
+      this.user.username = "";
+      this.user.email = "";
+      this.user.password = "";
+    }
+  },
 };
 </script>
 
@@ -24,13 +133,16 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+
 #nav {
   padding: 30px;
 }
+
 #nav a {
   font-weight: bold;
   color: #2c3e50;
 }
+
 #nav a.router-link-exact-active {
   color: #42b983;
 }

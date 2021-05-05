@@ -1,32 +1,95 @@
 <template>
-  <div>
-    <h1>ee</h1>
-    <v-card max-width="600px">
-      <form>
-        <v-text-field
+  <div class="loginForm">
+    <h1>Login</h1>
+    <v-form
+        ref="form"
+        v-model="formValid"
+        lazy-validation
+    >
+
+      <v-text-field
           v-model="email"
-          :error-messages="emailErrors"
+          :rules="emailRules"
           label="E-mail"
           required
-          @input="$v.email.$touch()"
-          @blur="$v.email.$touch()">
-        </v-text-field>
-        <v-checkbox
+      ></v-text-field>
+
+      <Password/>
+
+      <v-checkbox
           v-model="checkbox"
-          :error-messages="checkboxErrors"
           label="Remember me"
-          @change="$v.checkbox.$touch()"
-          @blur="$v.checkbox.$touch()">
-        </v-checkbox>
-        <v-btn class="mr-4" @click="submit"> submit </v-btn>
-        <v-btn @click="clear"> clear </v-btn>
-      </form>
-    </v-card>
+          required
+      ></v-checkbox>
+
+      <router-link to="/dashboard">
+        <v-btn
+            :disabled="!formValid"
+            color="success"
+            class="mr-4"
+            @click="validate({email, password})"
+        >
+          Connect
+        </v-btn>
+      </router-link>
+
+      <v-btn
+          color="error"
+          class="mr-4"
+          @click="resetForm"
+      >
+        Reset Fields
+      </v-btn>
+    </v-form>
   </div>
 </template>
 
 <script>
+import Password from '../components/Password.vue'
 export default {
-  name: "Login",
-};
+  name: 'Login',
+
+  components: {
+    Password,
+  },
+
+  data() {
+    return {
+      formValid: false,
+      email: "",
+      password: "",
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid',
+      ],
+      checkbox: false,
+    }
+  },
+
+  methods: {
+    validate(user) {
+      this.$refs.form.validate()
+      this.$emit("connect", user);
+    },
+    resetForm() {
+      this.$refs.form.reset()
+    }
+  }
+}
 </script>
+
+<style scoped>
+
+h1 {
+  font-size: 35px;
+  color: darkcyan;
+}
+
+.loginForm {
+  padding-top: 5%;
+  padding-left: 25%;
+  padding-right: 25%;
+}
+
+</style>
+
