@@ -81,7 +81,7 @@ export default {
       return this.role === "ROLE_ADMIN";
     },
     displayClearSearch() {
-      return this.searchField.length   != 0;
+      return this.searchField.length != 0;
     }
   },
   methods: {
@@ -123,14 +123,14 @@ export default {
       })
       .catch((err) => console.log(err));
 
-      axios
-      .get(
-        "http://localhost:8080/webapp/api/computer/count"
-      )
-      .then((response) => {
-        this.pageCount = response.data;
-      })
-      .catch((err) => console.log(err));
+      // axios
+      // .get(
+      //   "http://localhost:8080/webapp/api/computer/count"
+      // )
+      // .then((response) => {
+      //   this.pageCount = response.data;
+      // })
+      // .catch((err) => console.log(err));
   },
   data: function () {
     return {
