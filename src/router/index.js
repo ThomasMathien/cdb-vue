@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
-import Dashboard from '../views/Dashboard.vue'
-
+import DashboardComputer from '../views/DashboardComputer.vue'
+import DashboardCompany from '../views/DashboardCompany.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -12,9 +12,14 @@ const routes = [
     component: Login
   },
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard
+    path: '/dashboard/computer',
+    name: 'DashboardComputer',
+    component: DashboardComputer
+  },
+  {
+    path: '/dashboard/company',
+    name: 'DashboardCompany',
+    component: DashboardCompany
   }
 ]
 
