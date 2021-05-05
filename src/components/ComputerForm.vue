@@ -1,9 +1,9 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="600px">
+  <v-dialog v-model="show" persistent max-width="600px">
     <v-card>
       <v-card-title> Computer Form </v-card-title>
       <v-form ref="form" lazy-validation>
-        <v-text-field label="Computer Name" 
+        <v-text-field label="Computer Name" v-model="computerName" 
             :rules="companyNameRules"> 
         </v-text-field>
         <v-menu
@@ -28,7 +28,7 @@
           </template>
           <v-date-picker v-model="introduced" no-title scrollable>
             <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="memenuIntroducednu = false">
+            <v-btn text color="primary" @click="menuIntroduced = false">
               Cancel
             </v-btn>
             <v-btn
@@ -88,7 +88,7 @@
         ></v-autocomplete>
       </v-form>
       <v-card-actions>
-        <v-btn @click="dialog = false"> Cancel </v-btn>
+        <v-btn @click.stop="resetForm"> Cancel </v-btn>
         <v-btn type="submit" @click="validateForm"> Submit </v-btn>
       </v-card-actions>
     </v-card>
@@ -100,16 +100,19 @@ import axios from "axios";
 
 export default {
   name: "ComputerForm",
-
+  props: {
+    value: Boolean,
+    computer: Object,
+  },
   data() {
     return {
-      dialog: true,
-      menuIntroduced: false,
-      menuDiscontinued: false,
+      computerName: (this.computer ? this.computer.name : null) ,
       introduced: new Date().toISOString().substr(0, 10),
       discontinued: null,
+      selectedCompany: (this.computer && this.computer.companyDTORest ? this.computer.companyDTORest.id : null),
+      menuIntroduced: false,
+      menuDiscontinued: false,
       companyOptions: [],
-      selectedCompany: null,
       companyNameRules: [
           v => (!!v && !!v.trim()) || 'Computer name is required',
       ],
@@ -118,7 +121,16 @@ export default {
       ]
     };
   },
-
+  computed: {
+      show: {
+          get () {
+              return this.value;
+          },
+          set (value) {
+              this.$emit('input', value);
+          }
+      }
+  },
   mounted() {
     axios
       .get("http://localhost:8080/webapp/api/company")
@@ -129,15 +141,42 @@ export default {
   },
 
   methods: {
+      resetForm() {
+            this.show = false;
+            this.$refs.form.reset();
+            this.introduced = new Date().toISOString().substr(0, 10);
+      },
       validateForm() {
         if (this.$refs.form.validate()){
-            let data = {name: this.name, introduced: this.introduced, discontinued: this.discontinued, companyId: this.selectedCompany}
+            if (!this.computerId) {
+                this.createComputer();
+            } else {
+                this.updateComputer();
+            }
+         this.resetForm();
+        }
+      },
+      createComputer() {
+            let data = {name: this.computerName, 
+                introduced: this.introduced, 
+                discontinued: this.discontinued, 
+                companyId: this.selectedCompany}
             axios
                 .post("http://localhost:8080/webapp/api/computer/create", data )
+                .then((response) => console.log(response))
+                .catch((err) => console.log(err));     
+      },
+      updateComputer() {
+            let data = {name: this.computerName,
+                 id: this.computerId,
+                 introduced: this.introduced,
+                 discontinued: this.discontinued,
+                 companyId: this.selectedCompany}
+            axios
+                .post("http://localhost:8080/webapp/api/computer/update", data )
                 .then((response) => console.log(response))
                 .catch((err) => console.log(err));
             }
       }
-  }
 };
 </script>

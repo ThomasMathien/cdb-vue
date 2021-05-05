@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ComputerForm v-if="displayForm" />
+    <ComputerForm  v-if="displayForm" v-model="displayForm" v-bind:computer="editedComputer" />
     <v-main id="table">
       <v-toolbar fixed table>
         <v-text-field
@@ -19,7 +19,7 @@
             </v-btn>
           </template>
         </v-text-field>
-        <v-btn rounded icon @click="addComputer"
+        <v-btn rounded icon @click.stop="addComputer"
           ><v-icon large>mdi-plus-circle</v-icon></v-btn
         >
       </v-toolbar>
@@ -33,7 +33,7 @@
           hide-default-footer
           :items="computers"
           :items-per-page="itemsPerPage"
-          @click:row="addComputer"
+          @click:row="editComputer"
           class="elevation-4"
         >
         </v-data-table>
@@ -89,11 +89,14 @@ export default {
       this.computers = [],
       this.getComputers()
     },
-
     addComputer() {
+      this.editedComputer = null;
       this.displayForm = true;
     },
-
+    editComputer(value){
+      this.editedComputer = value;
+      this.displayForm = true;
+    },
     clearSearch() {
       this.searchField = "";
       this.getComputers();
@@ -135,6 +138,7 @@ export default {
   data: function () {
     return {
       selectedComputers: [],
+      editedComputer: null,
       page: 1,
       pageCount: 3,
       displayForm: false,
