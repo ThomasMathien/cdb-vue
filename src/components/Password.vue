@@ -6,7 +6,7 @@
       :append-icon="value ? 'mdi-eye' : 'mdi-eye-off'"
       @click:append="() => (value = !value)"
       :type="value ? 'password' : 'text'"
-      :rules="[rules.password]"
+      :rules="[rules.password, rules.required]"
       @input="_=>userPassword=_"
   ></v-text-field>
 </template>
