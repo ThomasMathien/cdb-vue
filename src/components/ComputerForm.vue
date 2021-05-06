@@ -1,9 +1,9 @@
 <template>
   <v-dialog v-model="show" persistent max-width="600px">
     <v-card>
-      <v-card-title> Computer Form </v-card-title>
+      <v-card-title> {{$t('newComputer')}} </v-card-title>
       <v-form ref="form" lazy-validation>
-        <v-text-field label="Computer Name" v-model="computerName" 
+        <v-text-field :label="$t('computerName')" v-model="computerName" 
             :rules="computerNameRules"> 
         </v-text-field>
         <v-menu
@@ -18,7 +18,7 @@
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
               v-model="introduced"
-              label="Introduction date"
+              :label="$t('introducedDate')"
               prepend-icon="mdi-calendar"
               readonly
               clearable
@@ -53,7 +53,7 @@
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
               v-model="discontinued"
-              label="Discontinuation date"
+              :label="$t('discontinuedDate')"
               prepend-icon="mdi-calendar"
               :rules="discontinuedRules"
               readonly
@@ -80,7 +80,7 @@
         </v-menu>
 
         <v-autocomplete v-model="selectedCompany"
-          label= "Company"
+          :label= "$t('companyName')"
           :items="companyOptions"
           item-text="name"
           item-value="id"
@@ -88,8 +88,8 @@
         ></v-autocomplete>
       </v-form>
       <v-card-actions>
-        <v-btn @click.stop="resetForm"> Cancel </v-btn>
-        <v-btn type="submit" @click="validateForm"> Submit </v-btn>
+        <v-btn @click.stop="resetForm"> {{ $t('cancel')}} </v-btn>
+        <v-btn type="submit" @click="validateForm"> {{ $t('submit')}} </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -114,10 +114,10 @@ export default {
       menuDiscontinued: false,
       companyOptions: [],
       computerNameRules: [
-          v => (!!v && !!v.trim()) || 'Computer name is required',
+          v => (!!v && !!v.trim()) || this.$root.$t('computerNameRequired'),
       ],
       discontinuedRules: [
-          v => (!v || v >= this.introduced) || "Discontinuation date must be after introduction date"
+          v => (!v || v >= this.introduced) || this.$root.$t('discontinuationAfterIntroductionRequired')
       ]
     };
   },

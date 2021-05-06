@@ -6,9 +6,15 @@
         color="#43a047"
         dark
     >
-      <v-app-bar-title>Computer Database</v-app-bar-title>
+      <v-app-bar-title>{{ $t('title') }}</v-app-bar-title>
 
       <v-spacer></v-spacer>
+
+    <div>
+        <button v-for="entry in languages" :key="entry.title" @click="changeLocale(entry.language)">
+            <flag :iso="entry.flag" v-bind:squared=false /> {{$t(entry.title)}}
+        </button>
+    </div>
 
       <div class="icons">
         <v-btn
@@ -46,7 +52,7 @@
                 class="mr-4"
                 @click="disconnect"
             >
-              Login
+              {{$t('login')}}
             </v-btn>
           </router-link>
 
@@ -55,7 +61,7 @@
           <v-switch
               v-model="$vuetify.theme.dark"
               inset
-              label="Dark Mode"
+              :label="$t('darkMode')"
           ></v-switch>
 
           <router-link to="/login" v-if="user.email">
@@ -97,6 +103,7 @@
 </template>
 
 <script>
+import i18n from '@/plugins/vue-i18n';
 
 export default {
   name: "App",
@@ -109,6 +116,10 @@ export default {
         email: "",
         password: ""
       },
+      languages: [
+          { flag: 'us', language: 'en', title: 'english'},
+          { flag: 'fr', language: 'fr', title: 'french' }
+      ]    
     }
   },
   methods: {
@@ -120,7 +131,10 @@ export default {
       this.user.username = "";
       this.user.email = "";
       this.user.password = "";
-    }
+    },
+    changeLocale(locale) {
+        i18n.locale = locale;
+    },
   },
 };
 </script>

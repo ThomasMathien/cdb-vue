@@ -4,22 +4,22 @@
     <Snackbar v-bind:display="displaySnackbar"  v-bind:message="snackbarMessage" @input="displaySnackbar = false" />
     <v-dialog v-model="showConfirm" persistent max-width="600px">
       <v-card>
-        <v-card-title> Deletion confirmation </v-card-title>
-        <v-card-subtitle> This deletion is irreversible. Are you sure to proceed?</v-card-subtitle>
+        <v-card-title> {{$t("deletionConfirmation")}} </v-card-title>
+        <v-card-subtitle> {{$t("deletionConfirmationMessage")}} </v-card-subtitle>
         <v-card-actions>
-          <v-btn @click.stop="showConfirm=false"> Cancel </v-btn>
-          <v-btn type="submit" @click="showConfirm = false; deleteCompany()"> Confirm </v-btn>
+          <v-btn @click.stop="showConfirm=false">  {{$t("cancel")}} </v-btn>
+          <v-btn type="submit" @click="showConfirm = false; deleteCompany()">  {{$t("confirm")}} </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
     <v-main id="table">
-      <h2>Total companies found: {{totalItems}}</h2>
+      <h2> {{$t("totalCompaniesFound")}} : {{totalItems}}</h2>
       <v-toolbar fixed table>
           <!-- TODO remove or handle disabled -->
         <v-text-field
           disabled 
           v-model="searchField"
-          label="Search"
+          :label= "$t('search')"
           single-line
           hide-details
           @keyup.enter.native="search"
@@ -66,7 +66,7 @@
             <v-col>
               <!-- TODO remove or handle disabled -->
               <v-select
-                label="Companies per page"
+                :label= "$t('companiesPerPage')"
                 v-model="itemsPerPage"
                 :items="itemsPerPageOptions"
                 @input="getCompanies"
@@ -199,7 +199,7 @@ export default {
       snackbarMessage: "",
       headers: [
         {
-          text: "Company name",
+          text: this.$t("companyName"),
           align: "start",
           sortable: false,
           value: "name",

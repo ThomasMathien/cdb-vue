@@ -5,28 +5,28 @@
       <router-link to="/dashboard/company" tag="button"> Dashboard Company </router-link>
   
     <ComputerForm  v-if="displayForm" v-model="displayForm" v-bind:computer="editedComputer"
-      @computerAdded="showSnackbar('Computer succesfully added')"
-      @computerEdited="showSnackbar('Computer succesfully edited')"
+      @computerAdded="showSnackbar($t('snackbarComputerAdded'))"
+      @computerEdited="showSnackbar($t('snackbarComputerEdited'))"
      />
     <Snackbar v-bind:display="displaySnackbar"  v-bind:message="snackbarMessage" @input="displaySnackbar = false" />
     <v-dialog v-model="showConfirm" persistent max-width="600px">
       <v-card>
-        <v-card-title> Deletion confirmation </v-card-title>
-        <v-card-subtitle> This deletion is irreversible. Are you sure to proceed?</v-card-subtitle>
+        <v-card-title> {{$t( 'deletionConfirmation')}} </v-card-title>
+        <v-card-subtitle> {{$t( 'deletionConfirmationMessage')}} </v-card-subtitle>
         <v-card-actions>
-          <v-btn @click.stop="showConfirm=false"> Cancel </v-btn>
-          <v-btn type="submit" @click="showConfirm = false; deleteComputer()"> Confirm </v-btn>
+          <v-btn @click.stop="showConfirm=false"> {{$t( 'cancel')}} </v-btn>
+          <v-btn type="submit" @click="showConfirm = false; deleteComputer()"> {{$t('confirm')}} </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
     <v-main id="table">
       <h2>
-        Total Computers found: {{totalItems}}
+        {{$t( 'totalComputersFound' )}} : {{totalItems}}
       </h2>
       <v-toolbar fixed table>
         <v-text-field
           v-model="searchField"
-          label="Search"
+          :label=  "$t('search')"
           single-line
           hide-details
           @keyup.enter.native="search"
@@ -59,7 +59,6 @@
         >
         </v-data-table>
         <div>
-          
           <v-row>
             <v-col cols="1">
               <v-btn 
@@ -74,7 +73,7 @@
             <v-spacer />
             <v-col>
               <v-select
-                label="Computers per page"
+                :label= "$t('computersPerPage')"
                 v-model="itemsPerPage"
                 :items="itemsPerPageOptions"
                 @input="changeItemsPerPage"
@@ -161,14 +160,12 @@ export default {
           console.log(response);
           this.getComputers();
           this.reset();
-          // this.showConfirm =false;
-          this.showSnackbar(response.length+ " computer(s) deleted");
+          this.showSnackbar(response.length+ " "+ this.$t('snackbarComputersDeleted'));
           })
         .catch((err) => {
           console.log(err)
-          this.showSnackbar("Computers could not be deleted");
+          this.showSnackbar(this.$t('snackbarComputersNotDeleted'));
         }); 
-      
     },
     getTotalItems() {
       axios
@@ -230,14 +227,14 @@ export default {
       itemsPerPageOptions: [10, 50, 100],
       headers: [
         {
-          text: "Computer name",
+          text: this.$t("computerName"),
           align: "start",
           sortable: false,
           value: "name",
         },
-        { text: "Introduced", value: "introduced" },
-        { text: "Discontinued", value: "discontinued" },
-        { text: "Company", value: "companyDTORest.name" },
+        { text: this.$t("introducedDate"), value: "introduced" },
+        { text: this.$t("discontinuedDate"), value: "discontinued" },
+        { text: this.$t("companyName"), value: "companyDTORest.name" },
       ],
       computers: [],
     };

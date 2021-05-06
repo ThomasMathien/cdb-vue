@@ -1,15 +1,15 @@
 <template>
   <v-dialog v-model="show" persistent max-width="600px">
     <v-card>
-      <v-card-title> Create new company </v-card-title>
+      <v-card-title> {{ $t('newCompany')}} </v-card-title>
       <v-form ref="form" lazy-validation>
-        <v-text-field label="Company Name" v-model="companyName" 
+        <v-text-field :label="$t('companyName')" v-model="companyName" 
             :rules="companyNameRules"> 
         </v-text-field>
       </v-form>
       <v-card-actions>
-        <v-btn @click.stop="resetForm"> Cancel </v-btn>
-        <v-btn type="submit" @click="validateForm"> Submit </v-btn>
+        <v-btn @click.stop="resetForm">  {{$t('cancel') }} </v-btn>
+        <v-btn type="submit" @click="validateForm"> {{$t('submit') }} </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -28,7 +28,7 @@ export default {
     return {
         companyName: (this.company ? this.company.name : null),
         companyNameRules: [
-          v => (!!v && !!v.trim()) || 'Company name is required',
+          v => (!!v && !!v.trim()) || this.$root.$t('companyNameRequired'),
       ],
     }
   },
