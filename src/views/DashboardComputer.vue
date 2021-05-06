@@ -4,8 +4,11 @@
   
       <router-link to="/dashboard/company" tag="button"> Dashboard Company </router-link>
   
-    <ComputerForm  v-if="displayForm" v-model="displayForm" v-bind:computer="editedComputer" />
-    <Snackbar v-bind:display=true  v-bind:message="snackbarMessage" />
+    <ComputerForm  v-if="displayForm" v-model="displayForm" v-bind:computer="editedComputer"
+      @computerAdded="showSnackbar('Computer succesfully added')"
+      @computerEdited="showSnackbar('Computer succesfully edited')"
+     />
+    <Snackbar v-bind:display="displaySnackbar"  v-bind:message="snackbarMessage" @input="displaySnackbar = false" />
     <v-main id="table">
       <h2>
         Total Computers found: {{totalItems}}
@@ -98,8 +101,12 @@ export default {
     }
   },
   methods: {
-    search() {
+    reset(){
       this.computers = [];
+      this.selectedComputers = [];
+    },
+    search() {
+      this.reset();
       this.getComputers();
       this.getTotalItems();
     },
@@ -115,22 +122,44 @@ export default {
       this.searchField = "";
       this.getComputers();
     },
-
     changeItemsPerPage() {
       this.page = 1;
       this.getComputers();
     },
-
-  getTotalItems() {
-     axios
-      .get(
-        "http://localhost:8080/webapp/api/computer/count/"+this.searchField
-      )
-      .then((response) => {
-          this.totalItems = response.data;
-      })
-      .catch((err) => console.log(err));
-  },
+    showSnackbar(message){
+      this.snackbarMessage = message;
+      this.displaySnackbar = true;
+    },
+    deleteComputer() {
+      let promises = [];
+      for (let computer of this.selectedComputers){
+        promises.push(
+          axios.post("http://localhost:8080/webapp/api/computer/delete?id="+computer.id)
+        );
+      }
+      Promise.all(promises)
+        .then( (response) => {
+          console.log(response);
+          this.getComputers();
+          this.reset();
+          this.showSnackbar(response.length+ " computer(s) deleted");
+          })
+        .catch((err) => {
+          console.log(err)
+          this.showSnackbar("Computers could not be deleted");
+        }); 
+      
+    },
+    getTotalItems() {
+      axios
+        .get(
+          "http://localhost:8080/webapp/api/computer/count/"+this.searchField
+        )
+        .then((response) => {
+            this.totalItems = response.data;
+        })
+        .catch((err) => console.log(err));
+    },
 
     getComputers() {
       axios
@@ -145,15 +174,6 @@ export default {
         })
         .catch((err) => console.log(err));
     },
-    deleteComputer() {
-      for (let computer of this.selectedComputers){
-        console.log(computer);
-        axios
-            .post("http://localhost:8080/webapp/api/computer/delete?id="+computer.id)
-            .then((response) => console.log(response))
-            .catch((err) => console.log(err));     
-      }
-      },
   },
   mounted() {
     axios
@@ -182,8 +202,9 @@ export default {
       editedComputer: null,
       page: 1,
       displayForm: false,
+      displaySnackbar: false,
       searchField: "",
-      snackbarMessage: "HHHHEEEEYYYYYYY",
+      snackbarMessage: "",
       itemsPerPage: 10,
       itemsPerPageOptions: [10, 50, 100],
       headers: [

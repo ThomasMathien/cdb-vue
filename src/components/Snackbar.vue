@@ -1,6 +1,6 @@
 <template>
     <v-snackbar
-      v-model="display"
+      v-model="show"
       :timeout="timeout"
     >
       {{ message }}
@@ -28,7 +28,17 @@ export default {
       return {
         timeout: 2000,
       }
-    }
+    },
+    computed: {
+      show: {
+          get () {
+              return this.display;
+          },
+          set (display) {
+              this.$emit('input', display);
+          }
+      }
+  },
 };
 </script>
 

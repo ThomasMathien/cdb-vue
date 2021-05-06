@@ -160,10 +160,17 @@ export default {
             let data = {name: this.computerName, 
                 introduced: this.introduced, 
                 discontinued: this.discontinued, 
-                companyId: this.selectedCompany}
+                companyDTORest: {
+                  id: this.selectedCompany,
+                  name: null
+                }
+            }
             axios
-                .post("http://localhost:8080/webapp/api/computer/create", data )
-                .then((response) => console.log(response))
+                .post("http://localhost:8080/webapp/api/computer/create", data)
+                .then((response) => {
+                  console.log(response)
+                  this.$emit("computerAdded")
+                })
                 .catch((err) => console.log(err));     
       },
       updateComputer() {
@@ -174,7 +181,10 @@ export default {
                  companyId: this.selectedCompany}
             axios
                 .post("http://localhost:8080/webapp/api/computer/update", data )
-                .then((response) => console.log(response))
+                .then((response) => {
+                  console.log(response)
+                  this.$emit("computerEdited");
+                })
                 .catch((err) => console.log(err));
             }
       }
