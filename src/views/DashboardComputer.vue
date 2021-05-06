@@ -4,7 +4,21 @@
   
       <router-link to="/dashboard/company" tag="button"> Dashboard Company </router-link>
   
-    <ComputerForm  v-if="displayForm" v-model="displayForm" v-bind:computer="editedComputer" />
+    <ComputerForm  v-if="displayForm" v-model="displayForm" v-bind:computer="editedComputer"
+      @computerAdded="showSnackbar('Computer succesfully added')"
+      @computerEdited="showSnackbar('Computer succesfully edited')"
+     />
+    <Snackbar v-bind:display="displaySnackbar"  v-bind:message="snackbarMessage" @input="displaySnackbar = false" />
+    <v-dialog v-model="showConfirm" persistent max-width="600px">
+      <v-card>
+        <v-card-title> Deletion confirmation </v-card-title>
+        <v-card-subtitle> This deletion is irreversible. Are you sure to proceed?</v-card-subtitle>
+        <v-card-actions>
+          <v-btn @click.stop="showConfirm=false"> Cancel </v-btn>
+          <v-btn type="submit" @click="showConfirm = false; deleteComputer()"> Confirm </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-main id="table">
       <h2>
         Total Computers found: {{totalItems}}
@@ -45,9 +59,15 @@
         >
         </v-data-table>
         <div>
+          
           <v-row>
             <v-col cols="1">
-              <v-btn icon v-if="canEdit">
+              <v-btn 
+                icon 
+                v-if="canEdit"
+                @click="showConfirm=true"
+                :disabled="!hasSelectedComputer"
+               >
                 <v-icon large>mdi-delete</v-icon>
               </v-btn>
             </v-col>
@@ -73,12 +93,14 @@
 
 <script>
 import ComputerForm from "../components/ComputerForm";
+import Snackbar from "../components/Snackbar";
 import axios from "axios";
 
 export default {
   name: "DashboardComputer",
   components: {
     ComputerForm,
+    Snackbar
   },
   props: {
     role: String,
@@ -92,11 +114,18 @@ export default {
     },
     pageCount(){
       return Math.ceil( this.totalItems  / this.itemsPerPage ) ;
+    },
+    hasSelectedComputer(){
+      return this.selectedComputers.length > 0;
     }
   },
   methods: {
-    search() {
+    reset(){
       this.computers = [];
+      this.selectedComputers = [];
+    },
+    search() {
+      this.reset();
       this.getComputers();
       this.getTotalItems();
     },
@@ -112,25 +141,47 @@ export default {
       this.searchField = "";
       this.getComputers();
     },
-
     changeItemsPerPage() {
       this.page = 1;
       this.getComputers();
     },
-
-  getTotalItems() {
-     axios
-      .get(
-        "http://localhost:8080/webapp/api/computer/count/"+this.searchField
-      )
-      .then((response) => {
-          this.totalItems = response.data;
-      })
-      .catch((err) => console.log(err));
-  },
+    showSnackbar(message){
+      this.snackbarMessage = message;
+      this.displaySnackbar = true;
+    },
+    deleteComputer() {
+      let promises = [];
+      for (let computer of this.selectedComputers){
+        promises.push(
+          axios.post("http://localhost:8080/webapp/api/computer/delete?id="+computer.id)
+        );
+      }
+      Promise.all(promises)
+        .then( (response) => {
+          console.log(response);
+          this.getComputers();
+          this.reset();
+          // this.showConfirm =false;
+          this.showSnackbar(response.length+ " computer(s) deleted");
+          })
+        .catch((err) => {
+          console.log(err)
+          this.showSnackbar("Computers could not be deleted");
+        }); 
+      
+    },
+    getTotalItems() {
+      axios
+        .get(
+          "http://localhost:8080/webapp/api/computer/count/"+this.searchField
+        )
+        .then((response) => {
+            this.totalItems = response.data;
+        })
+        .catch((err) => console.log(err));
+    },
 
     getComputers() {
-
       axios
         .get(
           "http://localhost:8080/webapp/api/computer/page?nbObject=" +
@@ -171,7 +222,10 @@ export default {
       editedComputer: null,
       page: 1,
       displayForm: false,
+      displaySnackbar: false,
+      showConfirm: false,
       searchField: "",
+      snackbarMessage: "",
       itemsPerPage: 10,
       itemsPerPageOptions: [10, 50, 100],
       headers: [

@@ -1,6 +1,17 @@
 <template>
   <div>
     <CompanyForm  v-if="displayForm" v-model="displayForm" v-bind:company="editedCompany" />
+    <Snackbar v-bind:display="displaySnackbar"  v-bind:message="snackbarMessage" @input="displaySnackbar = false" />
+    <v-dialog v-model="showConfirm" persistent max-width="600px">
+      <v-card>
+        <v-card-title> Deletion confirmation </v-card-title>
+        <v-card-subtitle> This deletion is irreversible. Are you sure to proceed?</v-card-subtitle>
+        <v-card-actions>
+          <v-btn @click.stop="showConfirm=false"> Cancel </v-btn>
+          <v-btn type="submit" @click="showConfirm = false; deleteCompany()"> Confirm </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-main id="table">
       <h2>Total companies found: {{totalItems}}</h2>
       <v-toolbar fixed table>
@@ -43,7 +54,11 @@
         <div>
           <v-row>
             <v-col cols="1">
-              <v-btn icon v-if="canEdit">
+              <v-btn icon 
+                v-if="canEdit" 
+                @click="showConfirm=true"
+                :disabled="!hasSelectedCompanies"
+                >
                 <v-icon large>mdi-delete</v-icon>
               </v-btn>
             </v-col>
@@ -71,12 +86,14 @@
 
 <script>
 import CompanyForm from "../components/CompanyForm";
+import Snackbar from "../components/Snackbar";
 import axios from "axios";
 
 export default {
   name: "DashboardCompany",
   components: {
     CompanyForm,
+    Snackbar
   },
   props: {
     role: String,
@@ -90,6 +107,9 @@ export default {
     },
     pageCount() {
         return Math.ceil(this.totalItems / this.itemsPerPage);
+    },
+    hasSelectedCompanies() {
+      return this.selectedCompanies.length > 0;
     }
   },
   methods: {
@@ -120,6 +140,16 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+    // deleteCompany() {
+    //   axios
+    //     .get(
+    //       "http://localhost:8080/webapp/api/company/delete/"+
+    //     )
+    //     .then((response) => {
+    //       this.companies = response.data;
+    //     })
+    //     .catch((err) => console.log(err));
+    // },
     getTotalItems() {
         axios
             .get(
@@ -161,9 +191,12 @@ export default {
       editedCompany: null,
       page: 1,
       displayForm: false,
+      showConfirm: false,
       searchField: "",
       itemsPerPage: 10,
       itemsPerPageOptions: [10, 50, 100],
+      displaySnackbar: false,
+      snackbarMessage: "",
       headers: [
         {
           text: "Company name",
