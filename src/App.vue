@@ -24,6 +24,8 @@
     <v-main>
       <router-view
           @connect="login"
+          @changeUsername="changeUsername"
+          @changeEmail="changeEmail"
           :user="user"
       />
 
@@ -39,7 +41,7 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>{{ this.user.email }}</v-list-item-title>
+            <v-list-item-title>{{ this.user.username }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -125,9 +127,9 @@ export default {
       drawer: null,
       user: {
         role: "",
-        username: "",
-        email: "",
-        password: ""
+        username: "John Leider",
+        email: "jleider@excilys.com",
+        password: "!JLeiderLaStar12"
       },
       items: [
         {title: 'Dashboard', icon: 'mdi-view-dashboard', link: '/dashboard'},
@@ -147,6 +149,12 @@ export default {
       this.user.username = "";
       this.user.email = "";
       this.user.password = "";
+    },
+    changeUsername(username){
+      this.user.username = username;
+    },
+    changeEmail(email){
+      this.user.email = email;
     }
   },
 };

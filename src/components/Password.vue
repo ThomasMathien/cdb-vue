@@ -3,11 +3,11 @@
       v-model="userPassword"
       autocomplete="current-password"
       :value="userPassword"
-      label="Enter password"
+      :label="label"
       :append-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
       @click:append="() => (visible = !visible)"
       :type="visible ? 'text' : 'password'"
-      :rules="[rules.password, rules.required]"
+      :rules="[rules.password, rules.required, newRules]"
       @input="changePassword"
   ></v-text-field>
 </template>
@@ -15,6 +15,7 @@
 
 <script>
 export default {
+  props: ["label", "newRules"],
   data: () => ({
     userPassword: "",
     valid: true,

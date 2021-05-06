@@ -14,7 +14,8 @@
       ></v-text-field>
 
       <Password
-      @changePassword="changePassword"
+          label="Enter Password"
+          @changePassword="changePassword"
       />
 
       <v-checkbox
@@ -47,6 +48,7 @@
 
 <script>
 import Password from '../components/Password.vue'
+
 export default {
   name: 'Login',
 
@@ -68,8 +70,8 @@ export default {
   },
 
   methods: {
-    changePassword(password){
-      this.password=password;
+    changePassword(password) {
+      this.password = password;
     },
     validate(user) {
       this.$refs.form.validate()

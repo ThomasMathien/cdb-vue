@@ -6,29 +6,29 @@
     </h1>
 
     <v-card class="accountCard">
-      <v-card-title>
-        Username
-      </v-card-title>
       <v-card-text>
-        {{ this.user.username }}
+        Username : {{ user.username }}
+        <UsernameModal
+            @changeUsername="changeUsername"
+            :user="user"
+        />
       </v-card-text>
-      <v-card-title>
-        Email
-      </v-card-title>
       <v-card-text>
-        {{ this.user.email }}
+        Email : {{ user.email }}
+        <EmailModal
+            @changeEmail="changeEmail"
+            :user="user"
+        />
       </v-card-text>
-      <v-card-title>
-        Birthday
-      </v-card-title>
       <v-card-text>
-        TODO...
+        Birthday : TODO...
       </v-card-text>
-      <v-card-title>
-        Password
-      </v-card-title>
       <v-card-text>
-        {{ this.user.password }}
+        Password :
+        <PasswordModal
+            @changeUsername="changeUsername"
+            :user="user"
+        />
       </v-card-text>
     </v-card>
 
@@ -37,11 +37,28 @@
 </template>
 
 <script>
+import UsernameModal from '../components/UsernameModal'
+import EmailModal from '../components/EmailModal'
+import PasswordModal from '../components/PasswordModal'
+
 export default {
   name: "Account",
   props: ['user'],
+  components: {
+    UsernameModal,
+    EmailModal,
+    PasswordModal
+  },
   data() {
     return {}
+  },
+  methods: {
+    changeUsername(username) {
+      this.$emit("changeUsername", username);
+    },
+    changeEmail(email) {
+      this.$emit("changeEmail", email);
+    }
   }
 }
 </script>
