@@ -26,6 +26,7 @@
           @connect="login"
           @changeUsername="changeUsername"
           @changeEmail="changeEmail"
+          @changePassword="changePassword"
           :user="user"
       />
 
@@ -129,7 +130,7 @@ export default {
         role: "",
         username: "John Leider",
         email: "jleider@excilys.com",
-        password: "!JLeiderLaStar12"
+        password: "SalutJohn"
       },
       items: [
         {title: 'Dashboard', icon: 'mdi-view-dashboard', link: '/dashboard'},
@@ -155,6 +156,9 @@ export default {
     },
     changeEmail(email){
       this.user.email = email;
+    },
+    changePassword(password){
+      this.user.password = password;
     }
   },
 };

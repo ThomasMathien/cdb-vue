@@ -26,7 +26,7 @@
       <v-card-text>
         Password :
         <PasswordModal
-            @changeUsername="changeUsername"
+            @changePassword="changePassword"
             :user="user"
         />
       </v-card-text>
@@ -58,6 +58,9 @@ export default {
     },
     changeEmail(email) {
       this.$emit("changeEmail", email);
+    },
+    changePassword(password) {
+      this.$emit("changePassword", password);
     }
   }
 }

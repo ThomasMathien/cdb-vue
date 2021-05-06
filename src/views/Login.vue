@@ -6,12 +6,10 @@
         v-model="formValid"
     >
 
-      <v-text-field
-          v-model="email"
-          :rules="emailRules"
-          label="E-mail"
-          required
-      ></v-text-field>
+      <Email
+          label="Enter Email"
+          @changeEmail="changeEmail"
+      />
 
       <Password
           label="Enter Password"
@@ -48,12 +46,13 @@
 
 <script>
 import Password from '../components/Password.vue'
+import Email from '../components/Email.vue'
+
 
 export default {
-  name: 'Login',
-
   components: {
     Password,
+    Email,
   },
 
   data() {
@@ -61,15 +60,14 @@ export default {
       formValid: false,
       email: "",
       password: "",
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid',
-      ],
       checkbox: false,
     }
   },
 
   methods: {
+    changeEmail(email){
+      this.email = email;
+    },
     changePassword(password) {
       this.password = password;
     },

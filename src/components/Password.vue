@@ -1,7 +1,6 @@
 <template>
   <v-text-field
       v-model="userPassword"
-      autocomplete="current-password"
       :value="userPassword"
       :label="label"
       :append-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
@@ -9,7 +8,7 @@
       :type="visible ? 'text' : 'password'"
       :rules="[rules.password, rules.required, newRules]"
       @input="changePassword"
-  ></v-text-field>
+  />
 </template>
 
 
@@ -18,7 +17,6 @@ export default {
   props: ["label", "newRules"],
   data: () => ({
     userPassword: "",
-    valid: true,
     visible: false,
     rules: {
       required: v => !!v || "Required.",
