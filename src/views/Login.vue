@@ -1,6 +1,6 @@
 <template>
   <div class="loginForm">
-    <h1>Login</h1>
+    <h1>{{ $t('login')}}</h1>
     <v-form
         ref="form"
         v-model="formValid"
@@ -10,7 +10,7 @@
       <v-text-field
           v-model="email"
           :rules="emailRules"
-          label="E-mail"
+          :label="$t('email')"
           required
       ></v-text-field>
 
@@ -18,7 +18,7 @@
 
       <v-checkbox
           v-model="checkbox"
-          label="Remember me"
+          :label="$t('rememberMe')"
           required
       ></v-checkbox>
 
@@ -29,7 +29,7 @@
             class="mr-4"
             @click="validate({email, password})"
         >
-          Connect
+          {{ $t('login')}}
         </v-btn>
       </router-link>
 
@@ -38,7 +38,7 @@
           class="mr-4"
           @click="resetForm"
       >
-        Reset Fields
+        {{ $t('resetFields')}}
       </v-btn>
     </v-form>
   </div>
@@ -59,8 +59,9 @@ export default {
       email: "",
       password: "",
       emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid',
+        v => !!v || this.$t('required'),
+        v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) 
+          || this.$t('emailMustBeValid')
       ],
       checkbox: false,
     }

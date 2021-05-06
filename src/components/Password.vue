@@ -2,7 +2,7 @@
   <v-text-field
       autocomplete="current-password"
       :value="userPassword"
-      label="Enter password"
+      :label="$t('password')"
       :append-icon="value ? 'mdi-eye' : 'mdi-eye-off'"
       @click:append="() => (value = !value)"
       :type="value ? 'password' : 'text'"
@@ -19,8 +19,8 @@ export default {
     valid: true,
     value: true,
     rules: {
-      required: v => !!v || "Required.",
-      password: v => (v && v.length >= 8) || 'Name must be more than 8 characters',
+      required: v => !!v || this.$t('required'),
+      password: v => (v && v.length >= 8) || this.$t('passwordMinimalLength'),
     }
   })
 };
