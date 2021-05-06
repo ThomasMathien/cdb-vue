@@ -94,7 +94,6 @@
 import ComputerForm from "../components/ComputerForm";
 import Snackbar from "../components/Snackbar";
 import axios from "axios";
-
 export default {
   name: "DashboardComputer",
   components: {
@@ -116,7 +115,20 @@ export default {
     },
     hasSelectedComputer(){
       return this.selectedComputers.length > 0;
-    }
+    },
+    headers() {
+      return [
+          {
+            text: this.$t("computerName"),
+            align: "start",
+            sortable: false,
+            value: "name",
+          },
+          { text: this.$t("introducedDate"), value: "introduced" },
+          { text: this.$t("discontinuedDate"), value: "discontinued" },
+          { text: this.$t("companyName"), value: "companyDTORest.name" },
+        ]
+    },
   },
   methods: {
     reset(){
@@ -177,7 +189,6 @@ export default {
         })
         .catch((err) => console.log(err));
     },
-
     getComputers() {
       axios
         .get(
@@ -201,7 +212,6 @@ export default {
         this.computers = response.data;
       })
       .catch((err) => console.log(err));
-
       axios
       .get(
         "http://localhost:8080/webapp/api/computer/count"
@@ -210,7 +220,6 @@ export default {
           this.totalItems = response.data;
       })
       .catch((err) => console.log(err));
-
   },
   data: function () {
     return {
@@ -225,17 +234,7 @@ export default {
       snackbarMessage: "",
       itemsPerPage: 10,
       itemsPerPageOptions: [10, 50, 100],
-      headers: [
-        {
-          text: this.$t("computerName"),
-          align: "start",
-          sortable: false,
-          value: "name",
-        },
-        { text: this.$t("introducedDate"), value: "introduced" },
-        { text: this.$t("discontinuedDate"), value: "discontinued" },
-        { text: this.$t("companyName"), value: "companyDTORest.name" },
-      ],
+      
       computers: [],
     };
   },

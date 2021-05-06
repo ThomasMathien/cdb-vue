@@ -110,7 +110,17 @@ export default {
     },
     hasSelectedCompanies() {
       return this.selectedCompanies.length > 0;
-    }
+    },
+    headers() { 
+      return [
+        {
+          text: this.$t("companyName"),
+          align: "start",
+          sortable: false,
+          value: "name",
+        },
+      ]
+    },
   },
   methods: {
     search() {
@@ -197,14 +207,6 @@ export default {
       itemsPerPageOptions: [10, 50, 100],
       displaySnackbar: false,
       snackbarMessage: "",
-      headers: [
-        {
-          text: this.$t("companyName"),
-          align: "start",
-          sortable: false,
-          value: "name",
-        },
-      ],
       companies: [],
     };
   },
