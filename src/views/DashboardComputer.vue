@@ -9,6 +9,16 @@
       @computerEdited="showSnackbar('Computer succesfully edited')"
      />
     <Snackbar v-bind:display="displaySnackbar"  v-bind:message="snackbarMessage" @input="displaySnackbar = false" />
+    <v-dialog v-model="showConfirm" persistent max-width="600px">
+      <v-card>
+        <v-card-title> Deletion confirmation </v-card-title>
+        <v-card-subtitle> This deletion is irreversible. Are you sure to proceed?</v-card-subtitle>
+        <v-card-actions>
+          <v-btn @click.stop="showConfirm=false"> Cancel </v-btn>
+          <v-btn type="submit" @click="showConfirm = false; deleteComputer()"> Confirm </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-main id="table">
       <h2>
         Total Computers found: {{totalItems}}
@@ -49,9 +59,15 @@
         >
         </v-data-table>
         <div>
+          
           <v-row>
             <v-col cols="1">
-              <v-btn icon v-if="canEdit" @click="deleteComputer">
+              <v-btn 
+                icon 
+                v-if="canEdit"
+                @click="showConfirm=true"
+                :disabled="!hasSelectedComputer"
+               >
                 <v-icon large>mdi-delete</v-icon>
               </v-btn>
             </v-col>
@@ -98,6 +114,9 @@ export default {
     },
     pageCount(){
       return Math.ceil( this.totalItems  / this.itemsPerPage ) ;
+    },
+    hasSelectedComputer(){
+      return this.selectedComputers.length > 0;
     }
   },
   methods: {
@@ -142,6 +161,7 @@ export default {
           console.log(response);
           this.getComputers();
           this.reset();
+          // this.showConfirm =false;
           this.showSnackbar(response.length+ " computer(s) deleted");
           })
         .catch((err) => {
@@ -203,6 +223,7 @@ export default {
       page: 1,
       displayForm: false,
       displaySnackbar: false,
+      showConfirm: false,
       searchField: "",
       snackbarMessage: "",
       itemsPerPage: 10,
