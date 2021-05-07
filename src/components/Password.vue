@@ -24,8 +24,8 @@ export default {
     }
   }),
   mounted: function(){
-    this.required = v => !!v || this.$t('required')
-    this.password = v => (v && v.length >= 8) || this.$t('passwordMinimalLength')
+    this.rules.required = v => !!v || this.$t('required')
+    this.rules.password = v => (v && v.length >= 8) || this.$t('passwordMinimalLength')
   },
   methods:{
     changePassword(){

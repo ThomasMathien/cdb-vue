@@ -10,11 +10,15 @@
 
       <v-spacer></v-spacer>
 
-    <div>
+      <div>
         <button v-for="entry in languages" :key="entry.title" @click="changeLocale(entry.language)">
-            <flag :iso="entry.flag" v-bind:squared=false /> {{$t(entry.title)}}
+          <flag
+              :iso="entry.flag"
+              v-bind:squared=false
+          />
+          {{ $t(entry.title) }}
         </button>
-    </div>
+      </div>
 
       <div class="icons">
         <v-btn
@@ -53,15 +57,14 @@
           </v-list-item-content>
         </v-list-item>
 
-        <router-link to="/login" v-if="!user.email">
-          <v-btn
-              color="primary"
-              class="mr-4"
-              @click="disconnect"
-          >
-            Login
-          </v-btn>
-        </router-link>
+        <v-btn
+            v-if="!user.email"
+            color="primary"
+            class="mr-4"
+            to="/login"
+        >
+          Login
+        </v-btn>
 
         <v-list
             v-if="user.email"
@@ -71,16 +74,15 @@
           <v-list-item
               v-for="item in items"
               :key="item.title"
-              link
               :to="item.link"
           >
-              <v-list-item-icon>
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-item-icon>
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
 
-              <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item-content>
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
           </v-list-item>
         </v-list>
 
@@ -90,15 +92,15 @@
             :label="$t('darkMode')"
         />
 
-        <router-link to="/login" v-if="user.email">
-          <v-btn
-              color="error"
-              class="mr-4"
-              @click="disconnect"
-          >
-            Disconnect
-          </v-btn>
-        </router-link>
+        <v-btn
+            v-if="user.email"
+            color="error"
+            class="mr-4"
+            @click="disconnect"
+            to="/login"
+        >
+          Disconnect
+        </v-btn>
 
       </v-navigation-drawer>
 
@@ -146,15 +148,14 @@ export default {
         {title: 'My Computers', icon: 'mdi-laptop', link: '/mycomputers'},
       ],
       languages: [
-          { flag: 'us', language: 'en', title: 'english'},
-          { flag: 'fr', language: 'fr', title: 'french' }
-      ]    
+        {flag: 'us', language: 'en', title: 'english'},
+        {flag: 'fr', language: 'fr', title: 'french'}
+      ]
     }
   },
   methods: {
     login(user) {
       this.user.email = user.email;
-      console.log(user.password);
       this.user.password = user.password;
     },
     disconnect() {
@@ -163,17 +164,17 @@ export default {
       this.user.email = "";
       this.user.password = "";
     },
-    changeUsername(username){
+    changeUsername(username) {
       this.user.username = username;
     },
-    changeEmail(email){
+    changeEmail(email) {
       this.user.email = email;
     },
-    changePassword(password){
+    changePassword(password) {
       this.user.password = password;
     },
     changeLocale(locale) {
-        i18n.locale = locale;
+      i18n.locale = locale;
     },
   },
 };

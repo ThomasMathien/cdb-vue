@@ -26,7 +26,6 @@
           color="success"
           class="mr-4"
           @click="validate({email, password})"
-          to="/dashboard/computer"
       >
         {{ $t('login') }}
       </v-btn>
@@ -71,7 +70,10 @@ export default {
     },
     validate(user) {
       this.$refs.form.validate()
+      console.log("Email : " + user.email);
+      console.log("Password : " + user.password);
       this.$emit("connect", user);
+      this.$router.push("/dashboard/computer");
     },
     resetForm() {
       this.$refs.form.reset()
