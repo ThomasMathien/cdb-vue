@@ -1,28 +1,33 @@
 <template>
   <v-text-field
-      autocomplete="current-password"
+      v-model="userPassword"
       :value="userPassword"
       :label="$t('password')"
-      :append-icon="value ? 'mdi-eye' : 'mdi-eye-off'"
-      @click:append="() => (value = !value)"
-      :type="value ? 'password' : 'text'"
-      :rules="[rules.password, rules.required]"
-      @input="_=>userPassword=_"
-  ></v-text-field>
+      :append-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+      @click:append="() => (visible = !visible)"
+      :type="visible ? 'text' : 'password'"
+      :rules="[rules.password, rules.required, newRules]"
+      @input="changePassword"
+  />
 </template>
 
 
 <script>
 export default {
+  props: ["label", "newRules"],
   data: () => ({
     userPassword: "",
-    valid: true,
-    value: true,
+    visible: false,
     rules: {
       required: v => !!v || this.$t('required'),
       password: v => (v && v.length >= 8) || this.$t('passwordMinimalLength'),
     }
-  })
+  }),
+  methods:{
+    changePassword(){
+      this.$emit("changePassword", this.userPassword);
+    }
+  }
 };
 </script>
 

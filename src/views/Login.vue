@@ -4,17 +4,16 @@
     <v-form
         ref="form"
         v-model="formValid"
-        lazy-validation
     >
-
-      <v-text-field
-          v-model="email"
-          :rules="emailRules"
+      <Email
           :label="$t('email')"
-          required
-      ></v-text-field>
+          @changeEmail="changeEmail"
+      />
 
-      <Password/>
+      <Password
+          label="Enter Password"
+          @changePassword="changePassword"
+      />
 
       <v-checkbox
           v-model="checkbox"
@@ -46,11 +45,13 @@
 
 <script>
 import Password from '../components/Password.vue'
-export default {
-  name: 'Login',
+import Email from '../components/Email.vue'
 
+
+export default {
   components: {
     Password,
+    Email,
   },
 
   data() {
@@ -58,16 +59,17 @@ export default {
       formValid: false,
       email: "",
       password: "",
-      emailRules: [
-        v => !!v || this.$t('required'),
-        v => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) 
-          || this.$t('emailMustBeValid')
-      ],
       checkbox: false,
     }
   },
 
   methods: {
+    changeEmail(email){
+      this.email = email;
+    },
+    changePassword(password) {
+      this.password = password;
+    },
     validate(user) {
       this.$refs.form.validate()
       this.$emit("connect", user);
@@ -80,11 +82,6 @@ export default {
 </script>
 
 <style scoped>
-
-h1 {
-  font-size: 35px;
-  color: darkcyan;
-}
 
 .loginForm {
   padding-top: 5%;
