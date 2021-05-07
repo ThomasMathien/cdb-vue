@@ -19,10 +19,14 @@ export default {
     userPassword: "",
     visible: false,
     rules: {
-      required: v => !!v || this.$t('required'),
-      password: v => (v && v.length >= 8) || this.$t('passwordMinimalLength'),
+      required: "",
+      password: "",
     }
   }),
+  mounted: function(){
+    this.required = v => !!v || this.$t('required')
+    this.password = v => (v && v.length >= 8) || this.$t('passwordMinimalLength')
+  },
   methods:{
     changePassword(){
       this.$emit("changePassword", this.userPassword);

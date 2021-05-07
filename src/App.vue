@@ -171,7 +171,7 @@ export default {
     },
     changePassword(password){
       this.user.password = password;
-    }
+    },
     changeLocale(locale) {
         i18n.locale = locale;
     },

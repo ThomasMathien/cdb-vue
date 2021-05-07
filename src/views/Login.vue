@@ -1,6 +1,6 @@
 <template>
   <div class="loginForm">
-    <h1>{{ $t('login')}}</h1>
+    <h1>{{ $t('login') }}</h1>
     <v-form
         ref="form"
         v-model="formValid"
@@ -21,23 +21,22 @@
           required
       ></v-checkbox>
 
-      <router-link to="/dashboard/computer">
-        <v-btn
-            :disabled="!formValid"
-            color="success"
-            class="mr-4"
-            @click="validate({email, password})"
-        >
-          {{ $t('login')}}
-        </v-btn>
-      </router-link>
+      <v-btn
+          :disabled="!formValid"
+          color="success"
+          class="mr-4"
+          @click="validate({email, password})"
+          to="/dashboard/computer"
+      >
+        {{ $t('login') }}
+      </v-btn>
 
       <v-btn
           color="error"
           class="mr-4"
           @click="resetForm"
       >
-        {{ $t('resetFields')}}
+        {{ $t('resetFields') }}
       </v-btn>
     </v-form>
   </div>
@@ -64,7 +63,7 @@ export default {
   },
 
   methods: {
-    changeEmail(email){
+    changeEmail(email) {
       this.email = email;
     },
     changePassword(password) {
