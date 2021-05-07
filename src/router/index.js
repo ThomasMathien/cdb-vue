@@ -33,7 +33,11 @@ const routes = [
     path: '/dashboard/company',
     name: 'DashboardCompany',
     component: DashboardCompany
-  }
+  },
+  {
+    path: '*',
+    redirect: '/login'
+  },
 ]
 
 const router = new VueRouter({

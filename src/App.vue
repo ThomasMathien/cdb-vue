@@ -143,7 +143,7 @@ export default {
         password: "SalutJohn"
       },
       items: [
-        {title: 'Dashboard', icon: 'mdi-view-dashboard', link: '/dashboard'},
+        {title: 'Dashboard', icon: 'mdi-view-dashboard', link: '/dashboard/computer'},
         {title: 'My Account', icon: 'mdi-account-box', link: '/account'},
         {title: 'My Computers', icon: 'mdi-laptop', link: '/mycomputers'},
       ],
