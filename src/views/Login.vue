@@ -1,13 +1,12 @@
 <template>
   <div class="loginForm">
-    <h1>Login</h1>
+    <h1>{{ $t('login')}}</h1>
     <v-form
         ref="form"
         v-model="formValid"
     >
-
       <Email
-          label="Enter Email"
+          :label="$t('email')"
           @changeEmail="changeEmail"
       />
 
@@ -18,18 +17,18 @@
 
       <v-checkbox
           v-model="checkbox"
-          label="Remember me"
+          :label="$t('rememberMe')"
           required
       ></v-checkbox>
 
-      <router-link to="/dashboard">
+      <router-link to="/dashboard/computer">
         <v-btn
             :disabled="!formValid"
             color="success"
             class="mr-4"
             @click="validate({email, password})"
         >
-          Connect
+          {{ $t('login')}}
         </v-btn>
       </router-link>
 
@@ -38,7 +37,7 @@
           class="mr-4"
           @click="resetForm"
       >
-        Reset Fields
+        {{ $t('resetFields')}}
       </v-btn>
     </v-form>
   </div>
@@ -91,3 +90,4 @@ export default {
 }
 
 </style>
+
