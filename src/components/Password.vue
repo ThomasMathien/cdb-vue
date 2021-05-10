@@ -6,7 +6,7 @@
       :append-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
       @click:append="() => (visible = !visible)"
       :type="visible ? 'text' : 'password'"
-      :rules="[rules.password, rules.required, newRules]"
+      :rules="[rules.required, rules.password, newRules]"
       @input="changePassword"
   />
 </template>

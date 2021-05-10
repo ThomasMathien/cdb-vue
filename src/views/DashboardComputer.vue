@@ -1,9 +1,6 @@
 <template>
   <div>
 
-  
-      <router-link to="/dashboard/company" tag="button"> Dashboard Company </router-link>
-  
     <ComputerForm  v-if="displayForm" v-model="displayForm" v-bind:computer="editedComputer"
       @computerAdded="showSnackbar($t('snackbarComputerAdded'))"
       @computerEdited="showSnackbar($t('snackbarComputerEdited'))"

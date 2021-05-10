@@ -1,6 +1,11 @@
 <template>
-  <div class="loginForm">
-    <h1>{{ $t('login') }}</h1>
+  <div
+      class="loginForm"
+  >
+    <h2>
+      {{ $t('login') }}
+    </h2>
+
     <v-form
         ref="form"
         v-model="formValid"
@@ -45,7 +50,6 @@
 import Password from '../components/Password.vue'
 import Email from '../components/Email.vue'
 
-
 export default {
   components: {
     Password,
@@ -88,7 +92,9 @@ export default {
   padding-top: 5%;
   padding-left: 25%;
   padding-right: 25%;
+  text-align: center;
 }
+
 
 </style>
 

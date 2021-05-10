@@ -1,34 +1,61 @@
 <template>
   <div class="account">
 
-    <h1>
+    <h2>
       Your Account
-    </h1>
+    </h2>
 
     <v-card class="accountCard">
       <v-card-text>
-        Username : {{ user.username }}
-        <UsernameModal
-            @changeUsername="changeUsername"
-            :user="user"
-        />
-      </v-card-text>
-      <v-card-text>
-        Email : {{ user.email }}
-        <EmailModal
-            @changeEmail="changeEmail"
-            :user="user"
-        />
-      </v-card-text>
-      <v-card-text>
-        Birthday : TODO...
-      </v-card-text>
-      <v-card-text>
-        Password :
-        <PasswordModal
-            @changePassword="changePassword"
-            :user="user"
-        />
+        <v-timeline
+            align-top
+            dense
+        >
+          <v-timeline-item
+              color="title"
+              small
+          >
+            <div class="accountItem">
+              <strong>Username : </strong> {{ user.username }}
+                <UsernameModal
+                    @changeUsername="changeUsername"
+                    :user="user"
+                />
+            </div>
+          </v-timeline-item>
+          <v-timeline-item
+              color="title"
+              small
+          >
+            <div class="accountItem">
+              <strong>Email :</strong> {{ user.email }}
+              <EmailModal
+                  @changeEmail="changeEmail"
+                  :user="user"
+              />
+            </div>
+          </v-timeline-item>
+          <v-timeline-item
+              color="title"
+              small
+          >
+            <div class="accountItem">
+              <strong>Birthday :</strong> TODO...
+            </div>
+          </v-timeline-item>
+          <v-timeline-item
+              color="title"
+              small
+          >
+            <div class="accountItem">
+              <strong>Edit Password </strong>
+              <PasswordModal
+                  @changePassword="changePassword"
+                  :user="user"
+              />
+            </div>
+          </v-timeline-item>
+        </v-timeline>
       </v-card-text>
     </v-card>
 
@@ -69,9 +96,17 @@ export default {
 <style scoped>
 
 .accountCard {
-  margin-top: 5%;
+  margin-top: 2%;
   margin-left: 15%;
   margin-right: 15%;
+}
+
+.accountItem {
+  font-size: 20px;
+}
+
+.accountItemButton{
+  text-align: right;
 }
 
 </style>
