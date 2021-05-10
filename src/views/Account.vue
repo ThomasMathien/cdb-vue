@@ -16,11 +16,12 @@
               small
           >
             <div class="accountItem">
-              <strong>Username : </strong> {{ user.username }}
+
                 <UsernameModal
                     @changeUsername="changeUsername"
                     :user="user"
                 />
+              <strong> Username : </strong> {{ user.username }}
             </div>
           </v-timeline-item>
           <v-timeline-item
@@ -28,11 +29,12 @@
               small
           >
             <div class="accountItem">
-              <strong>Email :</strong> {{ user.email }}
+
               <EmailModal
                   @changeEmail="changeEmail"
                   :user="user"
               />
+              <strong> Email :</strong> {{ user.email }}
             </div>
           </v-timeline-item>
           <v-timeline-item
@@ -48,11 +50,12 @@
               small
           >
             <div class="accountItem">
-              <strong>Edit Password </strong>
+
               <PasswordModal
                   @changePassword="changePassword"
                   :user="user"
               />
+              <strong> Edit Password </strong>
             </div>
           </v-timeline-item>
         </v-timeline>

@@ -17,22 +17,26 @@ const routes = [
   {
     path: '/account',
     name: 'Account',
-    component: Account
+    component: Account,
+    meta: { requiresAuth: true},
   },
   {
     path: '/mycomputers',
     name: 'MyComputers',
-    component: MyComputers
+    component: MyComputers,
+    meta: { requiresAuth: true},
   },
   {
     path: '/dashboard/computer',
     name: 'DashboardComputer',
-    component: DashboardComputer
+    component: DashboardComputer,
+    meta: { requiresAuth: true},
   },
   {
     path: '/dashboard/company',
     name: 'DashboardCompany',
-    component: DashboardCompany
+    component: DashboardCompany,
+    meta: { requiresAuth: true},
   },
   {
     path: '*',

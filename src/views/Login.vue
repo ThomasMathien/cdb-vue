@@ -74,8 +74,6 @@ export default {
     },
     validate(user) {
       this.$refs.form.validate()
-      console.log("Email : " + user.email);
-      console.log("Password : " + user.password);
       this.$emit("connect", user);
       this.$router.push("/dashboard/computer");
     },
