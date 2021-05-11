@@ -3,15 +3,18 @@
     <v-app-bar
         absolute
         app
-        color="#43a047"
+        color="primary"
         dark
     >
       <v-app-bar-title>{{ $t('title') }}</v-app-bar-title>
 
       <v-spacer></v-spacer>
 
-      <div>
-        <button v-for="entry in languages" :key="entry.title" @click="changeLocale(entry.language)">
+      <div class="flags">
+        <button
+            v-for="entry in languages"
+            :key="entry.title"
+            @click="changeLocale(entry.language)">
           <flag
               :iso="entry.flag"
               v-bind:squared=false
@@ -20,15 +23,63 @@
         </button>
       </div>
 
-      <div class="icons">
+      <div class="accountButton">
         <v-btn
-            icon
+            v-if="user.email"
+            color="primary"
             dark
+            elevation="0"
             @click.stop="drawer = !drawer"
         >
-          <v-icon>mdi-dots-vertical</v-icon>
+          <v-list-item>
+            <v-list-item-avatar>
+              <v-img
+                  src="https://lh3.googleusercontent.com/proxy/aDsmrX9OtlLgcmbOm7RZ1EnOKedH7Ka2KErqPCY_cUCTitdULuMqXn9rpClyBjv-zs_TIYUY9I1TwHYYPy1DijQKOPWIu0uxL2KICRUtkXRrIUJTv5AM3w1G7G3B3-MNSWAhpMDn9RnVUbTvFxw"></v-img>
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+              <v-list-item-title>{{ this.user.username }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-btn>
+
+        <v-btn
+            v-if="!user.email"
+            color="button"
+            class="mr-4"
+            to="/login"
+        >
+          Login
+        </v-btn>
+
       </div>
+
+      <template
+          v-if="user.email"
+          v-slot:extension
+      >
+        <v-tabs
+            fixed-tabs
+        >
+          <v-tab
+              to="/dashboard/computer"
+          >
+            Dashboard Computer
+          </v-tab>
+          <v-tab
+              v-if="user.role == 'ADMIN'"
+              to="/dashboard/company"
+          >
+            Dashboard Company
+          </v-tab>
+          <v-tab
+              v-if="user.role == 'ADMIN'"
+              to="/dashboard/user"
+          >
+            Dashboard User
+          </v-tab>
+        </v-tabs>
+      </template>
 
     </v-app-bar>
     <v-main>
@@ -37,6 +88,7 @@
           @changeUsername="changeUsername"
           @changeEmail="changeEmail"
           @changePassword="changePassword"
+          @changeBirthday="changeBirthday"
           :user="user"
           role="ROLE_ADMIN"
       />
@@ -47,25 +99,6 @@
           right
           temporary
       >
-        <v-list-item v-if="user.email">
-          <v-list-item-avatar>
-            <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
-          </v-list-item-avatar>
-
-          <v-list-item-content>
-            <v-list-item-title>{{ this.user.username }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-btn
-            v-if="!user.email"
-            color="primary"
-            class="mr-4"
-            to="/login"
-        >
-          Login
-        </v-btn>
-
         <v-list
             v-if="user.email"
             dense
@@ -85,22 +118,27 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
-
-        <v-switch
-            v-model="$vuetify.theme.dark"
-            inset
-            :label="$t('darkMode')"
-        />
-
-        <v-btn
-            v-if="user.email"
-            color="error"
-            class="mr-4"
-            @click="disconnect"
-            to="/login"
+        <v-row
+            align="center"
+            justify="space-around"
         >
-          Disconnect
-        </v-btn>
+          <v-switch
+              v-model="$vuetify.theme.dark"
+              inset
+              false-value
+              :label="$t('darkMode')"
+          />
+
+          <v-btn
+              v-if="user.email"
+              color="error"
+              class="mr-4"
+              @click="disconnect"
+              to="/login"
+          >
+            Disconnect
+          </v-btn>
+        </v-row>
 
       </v-navigation-drawer>
 
@@ -108,18 +146,17 @@
 
     <v-footer
         app
+        color="primary"
         dark
         padless
-        class="footer"
     >
       <v-card
           flat
           tile
-          class="footerTop"
       >
       </v-card>
 
-      <v-card-text class="footerBot">
+      <v-card-text>
         {{ new Date().getFullYear() }} — <strong>Computer Database</strong>
       </v-card-text>
 
@@ -137,13 +174,13 @@ export default {
     return {
       drawer: null,
       user: {
-        role: "",
+        role: "ADMIN",
         username: "John Leider",
         email: "jleider@excilys.com",
-        password: "SalutJohn"
+        password: "SalutJohn",
+        birthday: new Date().toISOString().substr(0,10),
       },
       items: [
-        {title: 'Dashboard', icon: 'mdi-view-dashboard', link: '/dashboard/computer'},
         {title: 'My Account', icon: 'mdi-account-box', link: '/account'},
         {title: 'My Computers', icon: 'mdi-laptop', link: '/mycomputers'},
       ],
@@ -173,6 +210,9 @@ export default {
     changePassword(password) {
       this.user.password = password;
     },
+    changeBirthday(birthday) {
+      this.user.birthday = birthday;
+    },
     changeLocale(locale) {
       i18n.locale = locale;
     },
@@ -182,14 +222,28 @@ export default {
 
 <style>
 
-h1 {
-  font-size: 35px;
-  color: darkcyan;
-  margin-top: 5%;
+.flags {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
-#app {
+.accountButton {
+  margin-left: 10px;
+}
+
+h2 {
+  font-size: 40px;
+  color: #00A096;
+  margin-top: 2%;
   text-align: center;
+}
+
+navDrawerButton {
+  text-align: center;
+}
+
+footer {
+  text-align: center
 }
 
 </style>

@@ -1,34 +1,65 @@
 <template>
   <div class="account">
 
-    <h1>
+    <h2>
       Your Account
-    </h1>
+    </h2>
 
     <v-card class="accountCard">
       <v-card-text>
-        Username : {{ user.username }}
-        <UsernameModal
-            @changeUsername="changeUsername"
-            :user="user"
-        />
-      </v-card-text>
-      <v-card-text>
-        Email : {{ user.email }}
-        <EmailModal
-            @changeEmail="changeEmail"
-            :user="user"
-        />
-      </v-card-text>
-      <v-card-text>
-        Birthday : TODO...
-      </v-card-text>
-      <v-card-text>
-        Password :
-        <PasswordModal
-            @changePassword="changePassword"
-            :user="user"
-        />
+        <v-timeline
+            align-top
+            dense
+        >
+          <v-timeline-item
+              color="title"
+              small
+          >
+            <div class="accountItem">
+                <UsernameModal
+                    @changeUsername="changeUsername"
+                    :user="user"
+                />
+              <strong> Username : </strong> {{ user.username }}
+            </div>
+          </v-timeline-item>
+          <v-timeline-item
+              color="title"
+              small
+          >
+            <div class="accountItem">
+              <EmailModal
+                  @changeEmail="changeEmail"
+                  :user="user"
+              />
+              <strong> Email :</strong> {{ user.email }}
+            </div>
+          </v-timeline-item>
+          <v-timeline-item
+              color="title"
+              small
+          >
+            <div class="accountItem">
+              <BirthdayModal
+                  @changeBirthday="changeBirthday"
+                  :user="user"
+              />
+              <strong> Birthday :</strong> {{ user.birthday }}
+            </div>
+          </v-timeline-item>
+          <v-timeline-item
+              color="title"
+              small
+          >
+            <div class="accountItem">
+              <PasswordModal
+                  @changePassword="changePassword"
+                  :user="user"
+              />
+              <strong> Edit Password </strong>
+            </div>
+          </v-timeline-item>
+        </v-timeline>
       </v-card-text>
     </v-card>
 
@@ -40,6 +71,8 @@
 import UsernameModal from '../components/UsernameModal'
 import EmailModal from '../components/EmailModal'
 import PasswordModal from '../components/PasswordModal'
+import BirthdayModal from '../components/BirthdayModal'
+
 
 export default {
   name: "Account",
@@ -47,7 +80,8 @@ export default {
   components: {
     UsernameModal,
     EmailModal,
-    PasswordModal
+    PasswordModal,
+    BirthdayModal,
   },
   data() {
     return {}
@@ -61,6 +95,9 @@ export default {
     },
     changePassword(password) {
       this.$emit("changePassword", password);
+    },
+    changeBirthday(birthday) {
+      this.$emit("changeBirthday", birthday);
     }
   }
 }
@@ -69,9 +106,17 @@ export default {
 <style scoped>
 
 .accountCard {
-  margin-top: 5%;
+  margin-top: 2%;
   margin-left: 15%;
   margin-right: 15%;
+}
+
+.accountItem {
+  font-size: 20px;
+}
+
+.accountItemButton{
+  text-align: right;
 }
 
 </style>
