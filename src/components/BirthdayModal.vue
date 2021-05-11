@@ -16,7 +16,7 @@
     <v-card>
 
       <v-card-title>
-        <span class="headline">Choose a new username</span>
+        <span class="headline">Choose a new birthday</span>
       </v-card-title>
 
       <v-card-text>
@@ -25,16 +25,12 @@
             v-model="formValid"
         >
           <v-container>
-            <v-row>
-
-              <v-col cols="12">
-                <Username
+            <v-row justify="center">
+                <Birthday
                     v-if="dialog"
-                    label="New Username"
-                    :value="username"
-                    @changeUsername="updateUsername"/>
-              </v-col>
-
+                    label="New Birthday"
+                    :value="birthday"
+                    @changeBirthday="updateBirthday"/>
             </v-row>
           </v-container>
         </v-form>
@@ -52,7 +48,7 @@
             :disabled="!formValid"
             color="blue darken-1"
             text
-            @click="changeUsername">
+            @click="changeBirthday">
           Save
         </v-btn>
       </v-card-actions>
@@ -62,36 +58,37 @@
 </template>
 
 <script>
-import Username from "./Username";
+import Birthday from "./Birthday";
 
 export default {
   props: ["user"],
 
   components: {
-    Username,
+    Birthday,
   },
 
   data: () => ({
     dialog: false,
     formValid: false,
-    username: ""
+    birthday: ""
   }),
   mounted: function () {
-    this.username = this.user.username;
+    this.birthday = this.user.birthday;
   },
   methods: {
     close() {
       this.dialog = false;
-      this.username = this.user.username;
+      this.birthday = this.user.birthday;
     },
-    changeUsername() {
+    changeBirthday() {
       this.dialog = false;
       this.$refs.form.validate();
-      this.$emit("changeUsername", this.username);
+      this.$emit("changeBirthday", this.birthday);
     },
-    updateUsername(username) {
-      this.username = username;
+    updateBirthday(birthday) {
+      this.birthday = birthday;
     }
   },
 };
 </script>
+
