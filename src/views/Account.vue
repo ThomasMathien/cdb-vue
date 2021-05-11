@@ -16,7 +16,6 @@
               small
           >
             <div class="accountItem">
-
                 <UsernameModal
                     @changeUsername="changeUsername"
                     :user="user"
@@ -29,7 +28,6 @@
               small
           >
             <div class="accountItem">
-
               <EmailModal
                   @changeEmail="changeEmail"
                   :user="user"
@@ -42,7 +40,11 @@
               small
           >
             <div class="accountItem">
-              <strong>Birthday :</strong> TODO...
+              <BirthdayModal
+                  @changeBirthday="changeBirthday"
+                  :user="user"
+              />
+              <strong> Birthday :</strong> {{ user.birthday }}
             </div>
           </v-timeline-item>
           <v-timeline-item
@@ -50,7 +52,6 @@
               small
           >
             <div class="accountItem">
-
               <PasswordModal
                   @changePassword="changePassword"
                   :user="user"
@@ -70,6 +71,8 @@
 import UsernameModal from '../components/UsernameModal'
 import EmailModal from '../components/EmailModal'
 import PasswordModal from '../components/PasswordModal'
+import BirthdayModal from '../components/BirthdayModal'
+
 
 export default {
   name: "Account",
@@ -77,7 +80,8 @@ export default {
   components: {
     UsernameModal,
     EmailModal,
-    PasswordModal
+    PasswordModal,
+    BirthdayModal,
   },
   data() {
     return {}
@@ -91,6 +95,9 @@ export default {
     },
     changePassword(password) {
       this.$emit("changePassword", password);
+    },
+    changeBirthday(birthday) {
+      this.$emit("changeBirthday", birthday);
     }
   }
 }

@@ -10,15 +10,18 @@ const messages = {
         /* Languages*/
         english: "English",
         french: "French",
+
         /* Global */
         title: "Computer Database",
         login: "Login",
         darkMode: "Dark Mode",
+
         /* Common */
         cancel: "Cancel",
         submit: "Submit",
         confirm: "Confirm",
         search: "Search",
+
         /* Forms */
         newCompany: 'New Company',
         newComputer: 'New Computer',
@@ -27,6 +30,7 @@ const messages = {
         rememberMe: "Remember Me",
         resetFields: "Reset fields",
         emailMustBeValid: 'E-mail must be valid',
+
         /* Dashboard */
         totalComputersFound: "Total computers found",
         computerName: "Computer Name",
@@ -43,6 +47,7 @@ const messages = {
         snackbarComputerEdited: 'Computer succesfully edited',
         snackbarComputersDeleted: "computer(s) deleted",
         snackbarComputersNotDeleted: "Computers could not be deleted",
+
         /* Validation */
         computerNameRequired: "Computer name is required",
         discontinuationAfterIntroductionRequired:"Discontinuation date must be after introduction date",
@@ -55,15 +60,18 @@ const messages = {
           /* Languages*/
         english: "Anglais",
         french: "Français",
+
         /* Global */
         title: "Base de données ordinateurs",
         login: "Se Connecter",
         darkMode: "Thème sombre",
+
         /* Common */
         cancel: "Annuler",
         submit: "Valider",
         confirm: "Confirmer",
         search: "Chercher",
+
         /* Forms */
         newCompany: 'Nouvelle Entreprise',
         newComputer: 'Nouvel Ordinateur',
@@ -72,6 +80,7 @@ const messages = {
         rememberMe: "Se souvenir de moi",
         resetFields: "Réinitialiser les champs",
         emailMustBeValid: 'L\'E-mail doit être valide',
+
         /* Dashboard */
         totalComputersFound: "Total d'ordinateurs trouvés",
         computerName: "Nom ordinateur",
@@ -88,6 +97,7 @@ const messages = {
         snackbarComputerEdited: "Succès de la mise à jour de l'ordinateur",
         snackbarComputersDeleted: "ordinateur(s) supprimé(s)",
         snackbarComputersNotDeleted: "Les ordinateurs n'ont pas pu être supprimés",
+
         /* Validation */
         computerNameRequired: "Le nom de l'ordinateur est obligatoire",
         discontinuationAfterIntroductionRequired:"La date de fin doit être après la date d'introduction",

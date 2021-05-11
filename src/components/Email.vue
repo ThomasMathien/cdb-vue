@@ -1,8 +1,8 @@
 <template>
   <v-text-field
       v-model="email"
-      :rules="[rules.required, rules.regex]"
       :label="label"
+      :rules="rules"
       @input="changeEmail"
   />
 </template>

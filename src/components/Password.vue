@@ -22,7 +22,7 @@ export default {
   }),
   mounted: function(){
     this.rules.push(v => !!v || 'Password ' + this.$t('required'));
-    this.rules.push(v => (v && v.length >= 8) || this.$t('passwordMinimalLength'))
+    this.rules.push(v => (v && v.length >= 8) || this.$t('passwordMinimalLength'));
     if(this.newRules){
       this.rules.push(this.newRules);
     }

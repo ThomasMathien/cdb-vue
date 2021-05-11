@@ -7,8 +7,7 @@ import DashboardComputer from '../views/DashboardComputer.vue'
 import DashboardCompany from '../views/DashboardCompany.vue'
 
 Vue.use(VueRouter)
-const user = {props: ["user", "role"] };
-console.log("User Role = " + this.role);
+const user = {props: ["user"] };
 
 const routes = [
     {
@@ -61,6 +60,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
+        console.log("User Email : " + user.email);
         if (user.email) {
             next({
                 path: '/login',
@@ -68,6 +68,7 @@ router.beforeEach((to, from, next) => {
             })
         } else {
             if (to.matched.some(record => record.meta.isAdmin)) {
+                console.log("User Role : " + user.role);
                 if (user.role !== "ADMIN") {
                     next({
                         path: '/dashboard/computer',

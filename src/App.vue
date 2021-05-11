@@ -88,6 +88,7 @@
           @changeUsername="changeUsername"
           @changeEmail="changeEmail"
           @changePassword="changePassword"
+          @changeBirthday="changeBirthday"
           :user="user"
           role="ROLE_ADMIN"
       />
@@ -176,7 +177,8 @@ export default {
         role: "ADMIN",
         username: "John Leider",
         email: "jleider@excilys.com",
-        password: "SalutJohn"
+        password: "SalutJohn",
+        birthday: new Date().toISOString().substr(0,10),
       },
       items: [
         {title: 'My Account', icon: 'mdi-account-box', link: '/account'},
@@ -207,6 +209,9 @@ export default {
     },
     changePassword(password) {
       this.user.password = password;
+    },
+    changeBirthday(birthday) {
+      this.user.birthday = birthday;
     },
     changeLocale(locale) {
       i18n.locale = locale;

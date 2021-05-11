@@ -1,9 +1,10 @@
 <template>
-  <v-text-field
-      v-model="username"
+  <v-date-picker
+      v-model="birthday"
       :label="label"
       :rules="rules"
-      @input="changeUsername"
+      @input="changeBirthday"
+      elevation="2"
   />
 </template>
 
@@ -11,18 +12,18 @@
 export default {
   props: ["label", "value"],
   data: () => ({
-        username: "",
+        birthday: "",
         rules: [
-          v => !!v || 'Username is required',
+          v => !!v || 'Birthday is required',
         ],
       }
   ),
   mounted: function () {
-    this.username = this.value;
+    this.birthday = this.value;
   },
   methods: {
-    changeUsername() {
-      this.$emit("changeUsername", this.username);
+    changeBirthday() {
+      this.$emit("changeBirthday", this.birthday);
     }
   }
 }
